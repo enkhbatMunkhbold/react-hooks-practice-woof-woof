@@ -33,20 +33,22 @@ function App() {
   }
 
   function handleUpdatePup(chosenPup) {
-    console.log(chosenPup)
-    // pups.forEach(pup => {
-    //   if(pup.id === chosenPup.id) {
-    //     fetch(`http://localhost:3001/pups/${chosenPup.id}`, {
-    //       method: 'PATCH',
-    //       headers: {
-    //         'Content-Type': 'application/json'
-    //       },
-    //       body: JSON.stringify({ isGoodDog: !chosenPup.isGoodDog })
-    //     }).then(res => res.json())
-    //     .then(changedPup => {console.log(changedPup)})
-    //   }
-    // })
-    // setPups([...pups])
+    pups.forEach(pup => {
+      if(pup.id === chosenPup.id) {
+        fetch(`http://localhost:3001/pups/${chosenPup.id}`, {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ isGoodDog: !chosenPup.isGoodDog })
+        }).then(res => res.json())
+        .then(changedPup => {
+          const updatedDogs = pups.map(pup => pup.id === changedPup.id ? changedPup : pup)
+          setPups(updatedDogs)
+          setShowPup(changedPup)
+        })
+      }
+    })
   }
 
   return (
